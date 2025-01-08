@@ -10,7 +10,7 @@ import org.opensearch.client.opensearch.core.bulk.IndexOperation
 import org.slf4j.LoggerFactory
 
 @Singleton
-class ProductIndexer(private val client: OpenSearchClient, private val registerClient: RegisterClient) {
+class CatalogProductIndexer(private val client: OpenSearchClient, private val registerClient: RegisterClient) {
 
 
 
@@ -39,7 +39,7 @@ class ProductIndexer(private val client: OpenSearchClient, private val registerC
         }
     }
     companion object {
-        private val LOG = LoggerFactory.getLogger(ProductIndexer::class.java)
+        private val LOG = LoggerFactory.getLogger(CatalogProductIndexer::class.java)
     }
 
 }

@@ -11,17 +11,14 @@ import org.slf4j.LoggerFactory
 
 @MicronautTest
 class OpensearchIndexerTest(
-    private val productIndexer: ProductIndexer,
+    private val catalogProductIndexer: CatalogProductIndexer,
     private val osContainer: OSContainer
 
 ) {
-    companion object {
-        private val LOG = LoggerFactory.getLogger(OpensearchIndexerTest::class.java)
-    }
 
     @Test
     fun testProductIndexer() {
-        productIndexer.shouldNotBeNull()
+        catalogProductIndexer.shouldNotBeNull()
         osContainer.shouldNotBeNull()
         val productDoc = CatalogProductDoc(
             id = UUID.randomUUID(),
@@ -34,8 +31,12 @@ class OpensearchIndexerTest(
             accessory = false,
             sparePart = false
         )
-        val response = productIndexer.index(listOf(productDoc))
+        val response = catalogProductIndexer.index(listOf(productDoc))
         response.errors() shouldBe false
+    }
+
+    companion object {
+        private val LOG = LoggerFactory.getLogger(OpensearchIndexerTest::class.java)
     }
 
 }
