@@ -1,1 +1,1 @@
-rootProject.name = "hm-grunndata-sachooser"
+rootProject.name = "hm-grunndata-compati"

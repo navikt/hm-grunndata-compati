@@ -1,0 +1,41 @@
+package no.nav.hm.grunndata.compati.product
+
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
+import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+
+import java.util.UUID
+import org.junit.jupiter.api.Test
+
+import org.slf4j.LoggerFactory
+
+@MicronautTest
+class OpensearchIndexerTest(
+    private val productIndexer: ProductIndexer,
+    private val osContainer: OSContainer
+
+) {
+    companion object {
+        private val LOG = LoggerFactory.getLogger(OpensearchIndexerTest::class.java)
+    }
+
+    @Test
+    fun testProductIndexer() {
+        productIndexer.shouldNotBeNull()
+        osContainer.shouldNotBeNull()
+        val productDoc = CatalogProductDoc(
+            id = UUID.randomUUID(),
+            orderRef = "orderRef",
+            title = "title",
+            hmsArtNr = "123456",
+            supplierRef = "supplierRef",
+            iso = "12345678",
+            mainProduct = true,
+            accessory = false,
+            sparePart = false
+        )
+        val response = productIndexer.index(listOf(productDoc))
+        response.errors() shouldBe false
+    }
+
+}

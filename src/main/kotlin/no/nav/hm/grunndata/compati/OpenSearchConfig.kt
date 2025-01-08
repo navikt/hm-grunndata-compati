@@ -1,4 +1,4 @@
-package no.nav.hm.grunndata.sachooser
+package no.nav.hm.grunndata.compati
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.micronaut.context.annotation.ConfigurationProperties

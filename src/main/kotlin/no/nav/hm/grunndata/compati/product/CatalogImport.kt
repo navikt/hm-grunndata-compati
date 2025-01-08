@@ -1,4 +1,4 @@
-package no.nav.hm.grunndata.sachooser.product
+package no.nav.hm.grunndata.compati.product
 
 
 import io.micronaut.core.annotation.Introspected
@@ -31,3 +31,4 @@ data class CatalogImport(
     val created: LocalDateTime = LocalDateTime.now(),
     val updated: LocalDateTime = LocalDateTime.now(),
 )
+

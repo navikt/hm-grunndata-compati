@@ -1,4 +1,4 @@
-package no.nav.hm.grunndata.sachooser.product
+package no.nav.hm.grunndata.compati.product
 
 import io.micronaut.data.model.Page
 import io.micronaut.http.MediaType.APPLICATION_JSON
