@@ -16,6 +16,9 @@
     "iso": {
       "type": "keyword"
     },
+    "iso_2": {
+      "type": "keyword"
+    },
     "mainProduct": {
       "type": "boolean"
     },

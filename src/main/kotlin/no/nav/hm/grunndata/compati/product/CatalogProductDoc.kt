@@ -6,10 +6,11 @@ import java.util.UUID
 
 @Introspected
 data class CatalogProductDoc (
-    val id: UUID = UUID.randomUUID(),
+    val id: String,
     val orderRef: String,
     val hmsArtNr: String,
     val iso: String,
+    val iso_2: String,
     val title: String,
     val supplierRef: String,
     val mainProduct: Boolean,
@@ -20,9 +21,11 @@ data class CatalogProductDoc (
 )
 
 fun CatalogImport.toDoc() = CatalogProductDoc(
+    id = this.hmsArtNr,
     orderRef = this.orderRef,
     hmsArtNr = this.hmsArtNr,
     iso = this.iso,
+    iso_2 = this.iso.substring(0,4),
     title = this.title,
     supplierRef = this.supplierRef,
     mainProduct = this.mainProduct,

@@ -21,15 +21,16 @@ class OpensearchIndexerTest(
         catalogProductIndexer.shouldNotBeNull()
         osContainer.shouldNotBeNull()
         val productDoc = CatalogProductDoc(
-            id = UUID.randomUUID(),
+            id = "123456",
             orderRef = "orderRef",
             title = "title",
             hmsArtNr = "123456",
             supplierRef = "supplierRef",
             iso = "12345678",
+            iso_2 = "1234",
             mainProduct = true,
             accessory = false,
-            sparePart = false
+            sparePart = false,
         )
         val response = catalogProductIndexer.index(listOf(productDoc))
         response.errors() shouldBe false

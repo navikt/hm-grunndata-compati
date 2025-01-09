@@ -1,21 +1,93 @@
 package no.nav.hm.grunndata.compati.product
 
 import jakarta.inject.Singleton
+import java.io.StringReader
+import java.time.LocalDate
 import org.opensearch.client.opensearch.OpenSearchClient
 import org.opensearch.client.opensearch._types.Refresh
+import org.opensearch.client.opensearch._types.mapping.TypeMapping
 import org.opensearch.client.opensearch.core.BulkRequest
 import org.opensearch.client.opensearch.core.BulkResponse
 import org.opensearch.client.opensearch.core.bulk.BulkOperation
 import org.opensearch.client.opensearch.core.bulk.IndexOperation
+import org.opensearch.client.opensearch.indices.CreateIndexRequest
+import org.opensearch.client.opensearch.indices.ExistsAliasRequest
+import org.opensearch.client.opensearch.indices.GetAliasRequest
+import org.opensearch.client.opensearch.indices.IndexSettings
+import org.opensearch.client.opensearch.indices.UpdateAliasesRequest
+import org.opensearch.client.opensearch.indices.update_aliases.ActionBuilders
 import org.slf4j.LoggerFactory
 
 @Singleton
-class CatalogProductIndexer(private val client: OpenSearchClient, private val registerClient: RegisterClient) {
+class CatalogProductIndexer(private val client: OpenSearchClient,
+                            private val registerClient: RegisterClient) {
 
 
+    private val aliasName: String = "catalogproducts"
 
+    init {
+        try {
+            initAlias()
+        } catch (e: Exception) {
+            LOG.error("Trying to init alias ${aliasName}, failed! OpenSearch might not be ready ${e.message}, will wait 10s and retry")
+            Thread.sleep(10000)
+            initAlias()
+        }
+    }
+
+    private fun initAlias() {
+        if (!existsAlias()) {
+            LOG.warn("alias $aliasName is not pointing any index")
+            val indexName = "${aliasName}_${LocalDate.now()}"
+            LOG.info("Creating index $indexName")
+            createIndex(indexName,settings, mapping)
+            updateAlias(indexName)
+        }
+        else {
+            LOG.info("Aliases is pointing to ${getAlias().toJsonString()}")
+        }
+    }
+
+    fun existsAlias()
+            = client.indices().existsAlias(ExistsAliasRequest.Builder().name(aliasName).build()).value()
+
+    fun getAlias()
+            = client.indices().getAlias(GetAliasRequest.Builder().name(aliasName).build())
+
+    fun createIndex(indexName: String, settings: String, mapping: String): Boolean {
+        val mapper = client._transport().jsonpMapper()
+        val createIndexRequest = CreateIndexRequest.Builder().index(indexName)
+        val settingsParser = mapper.jsonProvider().createParser(StringReader(settings))
+        val indexSettings = IndexSettings._DESERIALIZER.deserialize(settingsParser, mapper)
+        createIndexRequest.settings(indexSettings)
+        val mappingsParser = mapper.jsonProvider().createParser(StringReader(mapping))
+        val typeMapping = TypeMapping._DESERIALIZER.deserialize(mappingsParser, mapper)
+        createIndexRequest.mappings(typeMapping)
+        val ack = client.indices().create(createIndexRequest.build()).acknowledged()!!
+        LOG.info("Created $indexName with status: $ack")
+        return ack
+    }
+
+    fun updateAlias(indexName: String): Boolean {
+        val updateAliasesRequestBuilder = UpdateAliasesRequest.Builder()
+        if (existsAlias()) {
+            val aliasResponse = getAlias()
+            val indices = aliasResponse.result().keys
+            indices.forEach { index ->
+                val removeAction = ActionBuilders.remove().index(index).alias(aliasName).build()
+                updateAliasesRequestBuilder.actions { it.remove(removeAction) }
+            }
+        }
+        val addAction = ActionBuilders.add().index(indexName).alias(aliasName).build()
+        updateAliasesRequestBuilder.actions { it.add(addAction) }
+        val updateAliasesRequest = updateAliasesRequestBuilder.build()
+        val ack = client.indices().updateAliases(updateAliasesRequest).acknowledged()
+        LOG.info("update for alias $aliasName and pointing to $indexName with status: $ack")
+        return ack
+    }
     suspend fun indexProducts(orderRef: String? = null) {
         val products = registerClient.fetchCatalogImport(orderRef = orderRef , size = 5000, page = 0).content.map { it.toDoc() }
+        LOG.info("Indexing ${products.size} catalog products")
         index(products, "catalogproducts")
     }
 
@@ -40,6 +112,11 @@ class CatalogProductIndexer(private val client: OpenSearchClient, private val re
     }
     companion object {
         private val LOG = LoggerFactory.getLogger(CatalogProductIndexer::class.java)
+        val settings = CatalogProductIndexer::class.java
+            .getResource("/opensearch/catalogproducts_settings.json")!!.readText()
+        val mapping = CatalogProductIndexer::class.java
+            .getResource("/opensearch/catalogproducts_mapping.json")!!.readText()
+
     }
 
 }
