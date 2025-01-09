@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.micronaut.context.annotation.ConfigurationProperties
 import io.micronaut.context.annotation.Factory
 import jakarta.inject.Singleton
+import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import org.apache.hc.client5.http.auth.AuthScope
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials
@@ -12,6 +13,7 @@ import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider
 import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder
 import org.apache.hc.client5.http.ssl.ClientTlsStrategyBuilder
 import org.apache.hc.core5.http.HttpHost
+import org.apache.hc.core5.ssl.SSLContextBuilder
 import org.opensearch.client.json.jackson.JacksonJsonpMapper
 import org.opensearch.client.opensearch.OpenSearchClient
 import org.opensearch.client.transport.OpenSearchTransport
@@ -35,11 +37,23 @@ class OpenSearchConfig(private val openSearchEnv: OpenSearchEnv, private val obj
             UsernamePasswordCredentials(openSearchEnv.user, openSearchEnv.password.toCharArray())
         )
 
+        val sslContext = if (openSearchEnv.url == "https://localhost:9200"
+            && openSearchEnv.user == "admin"
+            && openSearchEnv.password == "admin") {
+            LOG.warn("Using default OpenSearch URL, switching to test/dev mode")
+            SSLContextBuilder
+                .create()
+                .loadTrustMaterial(
+                    null
+                ) { chains: Array<X509Certificate?>?, authType: String? -> true }
+                .build()
+        } else SSLContext.getDefault()
+
         val builder = ApacheHttpClient5TransportBuilder.builder(host)
             .setMapper(JacksonJsonpMapper(objectMapper))
             .setHttpClientConfigCallback { httpClientBuilder: HttpAsyncClientBuilder ->
                 val tlsStrategy = ClientTlsStrategyBuilder.create()
-                    .setSslContext(SSLContext.getDefault())
+                    .setSslContext(sslContext)
                     .build()
                 val connectionManager = PoolingAsyncClientConnectionManagerBuilder
                     .create()

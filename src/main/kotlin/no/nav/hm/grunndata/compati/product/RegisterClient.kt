@@ -10,7 +10,7 @@ import io.micronaut.http.client.annotation.Client
 interface RegisterClient {
 
     @Get(uri ="/internal/catalog/import", consumes = [APPLICATION_JSON])
-    fun fetchCatalogImport(
+    suspend fun fetchCatalogImport(
         @QueryValue("orderRef") orderRef: String? = null,
         @QueryValue("size") size: Int? = null,
         @QueryValue("page") page: Int? = null,

@@ -1,0 +1,39 @@
+{
+  "date_detection": false,
+  "properties": {
+    "accessory": {
+      "type": "boolean"
+    },
+    "created": {
+      "type": "date"
+    },
+    "hmsArtNr": {
+      "type": "keyword"
+    },
+    "id": {
+      "type": "keyword"
+    },
+    "iso": {
+      "type": "keyword"
+    },
+    "mainProduct": {
+      "type": "boolean"
+    },
+    "orderRef": {
+      "type": "keyword"
+    },
+    "sparePart": {
+      "type": "boolean"
+    },
+    "supplierRef": {
+      "type": "keyword"
+    },
+    "title": {
+      "type": "text",
+      "analyzer": "norwegian_html"
+    },
+    "updated": {
+      "type": "date"
+    }
+  }
+}
