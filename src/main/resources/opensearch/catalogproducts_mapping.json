@@ -16,7 +16,7 @@
     "iso": {
       "type": "keyword"
     },
-    "iso_2": {
+    "postNr": {
       "type": "keyword"
     },
     "mainProduct": {

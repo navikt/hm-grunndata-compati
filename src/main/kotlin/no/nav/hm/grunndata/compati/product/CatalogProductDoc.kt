@@ -10,8 +10,8 @@ data class CatalogProductDoc (
     val orderRef: String,
     val hmsArtNr: String,
     val iso: String,
-    val iso_2: String,
     val title: String,
+    val postNr: List<String> = emptyList(),
     val supplierRef: String,
     val mainProduct: Boolean,
     val sparePart: Boolean,
@@ -25,7 +25,7 @@ fun CatalogImport.toDoc() = CatalogProductDoc(
     orderRef = this.orderRef,
     hmsArtNr = this.hmsArtNr,
     iso = this.iso,
-    iso_2 = this.iso.substring(0,4),
+    postNr = parsedelkontraktNr(this.postNr!!).map { it.first},
     title = this.title,
     supplierRef = this.supplierRef,
     mainProduct = this.mainProduct,
@@ -34,3 +34,27 @@ fun CatalogImport.toDoc() = CatalogProductDoc(
     created = this.created,
     updated = this.updated
 )
+val delKontraktRegex = Regex("d(\\d+)([A-Q-STU-Z]*)r*(\\d*),*")
+
+fun parsedelkontraktNr(subContractNr: String): List<Pair<String, Int>> {
+    try {
+        val cleanSubContractNr = subContractNr.replace("\\s".toRegex(), "")
+
+        var matchResult = delKontraktRegex.find(cleanSubContractNr)
+        val mutableList: MutableList<Pair<String, Int>> = mutableListOf()
+        if (matchResult != null) {
+            while (matchResult != null) {
+                val groupValues = matchResult.groupValues
+                val post = groupValues[1] + groupValues[2].uppercase()
+                val rank1 = groupValues[3].toIntOrNull() ?: 99
+                mutableList.add(Pair(post, rank1))
+                matchResult = matchResult.next()
+            }
+        } else {
+            throw Exception("Klarte ikke å lese delkontrakt nr. $subContractNr")
+        }
+        return mutableList
+    } catch (e: Exception) {
+        throw Exception("Klarte ikke å lese post og rangering fra delkontrakt nr. $subContractNr")
+    }
+}
