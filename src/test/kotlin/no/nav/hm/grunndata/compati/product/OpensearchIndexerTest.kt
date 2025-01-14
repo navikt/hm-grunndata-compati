@@ -31,6 +31,9 @@ class OpensearchIndexerTest(
             mainProduct = true,
             accessory = false,
             sparePart = false,
+            seriesTitle = "seriesTitle",
+            seriesId = UUID.randomUUID(),
+            productId = UUID.randomUUID()
         )
         val response = catalogProductIndexer.index(listOf(productDoc))
         response.errors() shouldBe false

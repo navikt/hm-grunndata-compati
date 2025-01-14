@@ -35,6 +35,19 @@
       "type": "text",
       "analyzer": "norwegian_html"
     },
+    "seriesTitle": {
+      "type": "text",
+      "analyzer": "norwegian_html"
+    },
+    "seriesId": {
+      "type": "keyword"
+    },
+    "productId": {
+      "type": "keyword"
+    },
+    "title_keyword": {
+      "type": "keyword"
+    },
     "updated": {
       "type": "date"
     }

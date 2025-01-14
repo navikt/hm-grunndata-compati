@@ -11,6 +11,9 @@ data class CatalogProductDoc (
     val hmsArtNr: String,
     val iso: String,
     val title: String,
+    val seriesTitle: String,
+    val seriesId: UUID,
+    val productId: UUID?,
     val postNr: List<String> = emptyList(),
     val supplierRef: String,
     val mainProduct: Boolean,
@@ -20,13 +23,16 @@ data class CatalogProductDoc (
     val updated: LocalDateTime = LocalDateTime.now()
 )
 
-fun CatalogImport.toDoc() = CatalogProductDoc(
+fun CatalogSeriesInfo.toDoc() = CatalogProductDoc(
     id = this.hmsArtNr,
     orderRef = this.orderRef,
     hmsArtNr = this.hmsArtNr,
     iso = this.iso,
     postNr = parsedelkontraktNr(this.postNr!!).map { it.first},
     title = this.title,
+    seriesTitle = this.seriesTitle,
+    seriesId = this.seriesId,
+    productId = this.productId,
     supplierRef = this.supplierRef,
     mainProduct = this.mainProduct,
     sparePart = this.sparePart,

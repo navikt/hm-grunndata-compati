@@ -86,7 +86,7 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
         return ack
     }
     suspend fun indexProducts(orderRef: String? = null) {
-        val products = registerClient.fetchCatalogImport(orderRef = orderRef , size = 5000, page = 0).content.map { it.toDoc() }
+        val products = registerClient.fetchCatalogImport(orderRef = orderRef ).map { it.toDoc() }
         LOG.info("Indexing ${products.size} catalog products")
         index(products, "catalogproducts")
     }

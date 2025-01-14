@@ -1,0 +1,63 @@
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "bool": {
+            "must": [
+              {
+                "more_like_this": {
+                  "fields": [
+                    "title"
+                  ],
+                  "like": {
+                    "_id": "268778"
+                  },
+                  "min_term_freq": 1,
+                  "max_query_terms": 25
+                }
+              },
+              {
+                "prefix": {
+                  "iso": {
+                    "value": "1809"
+                  }
+                }
+              },
+              {
+                "term": {
+                  "mainProduct": {
+                    "value": true
+                  }
+                }
+              },
+              {
+                "bool": {
+                  "should": [
+                    {
+                      "terms": {
+                        "postNr": [
+                          "10",
+                          "11"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "term": {
+            "id": {
+              "value":"268778"
+            }
+          }
+        }
+
+      ]
+    }
+  },
+  "size": 500
+}

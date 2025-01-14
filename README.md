@@ -1,2 +1,2 @@
-# hm-grunndata-sachooser
+# hm-grunndata-compati
 Find compatible accessory and spareparts
