@@ -8,19 +8,18 @@
               {
                 "more_like_this": {
                   "fields": [
-                    "title"
+                    "seriesTitle"
                   ],
-                  "like": {
-                    "_id": "268778"
-                  },
+                  "like": "%title",
                   "min_term_freq": 1,
-                  "max_query_terms": 25
+                  "max_query_terms": 25,
+                  "min_doc_freq": 1
                 }
               },
               {
                 "prefix": {
                   "iso": {
-                    "value": "1809"
+                    "value": "%iso"
                   }
                 }
               },
@@ -37,8 +36,7 @@
                     {
                       "terms": {
                         "postNr": [
-                          "10",
-                          "11"
+                            "%postNr"
                         ]
                       }
                     }
@@ -47,17 +45,12 @@
               }
             ]
           }
-        },
-        {
-          "term": {
-            "id": {
-              "value":"268778"
-            }
-          }
         }
-
       ]
     }
+  },
+  "collapse": {
+    "field": "seriesId"
   },
   "size": 500
 }

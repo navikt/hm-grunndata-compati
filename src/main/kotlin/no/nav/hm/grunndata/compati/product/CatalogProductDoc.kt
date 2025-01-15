@@ -23,6 +23,12 @@ data class CatalogProductDoc (
     val updated: LocalDateTime = LocalDateTime.now()
 )
 
+data class CompatibleProductResult(
+    val score: Double,
+    val seriesTitle: String,
+    val seriesId: String
+)
+
 fun CatalogSeriesInfo.toDoc() = CatalogProductDoc(
     id = this.hmsArtNr,
     orderRef = this.orderRef,
