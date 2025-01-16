@@ -72,3 +72,13 @@ grunndata:
 
 elector:
   path: ${ELECTOR_PATH:localhost}
+
+kafka:
+  topic: teamdigihot.hm-grunndata-v1
+  consumerGroupId: hm-grunndata-register-g1
+  trustStorePath: ${KAFKA_TRUSTSTORE_PATH:}
+  trustStorePassword: ${KAFKA_CREDSTORE_PASSWORD:}
+  keystorePath: ${KAFKA_KEYSTORE_PATH:}
+  keystorePassword: ${KAFKA_CREDSTORE_PASSWORD:}
+  health:
+    enabled: false

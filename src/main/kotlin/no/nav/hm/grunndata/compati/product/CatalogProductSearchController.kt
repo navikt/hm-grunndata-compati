@@ -1,6 +1,5 @@
 package no.nav.hm.grunndata.compati.product
 
-import io.micronaut.core.annotation.Introspected
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.QueryValue
@@ -10,13 +9,13 @@ import org.slf4j.LoggerFactory
 class CatalogProductSearchController(private val catalogProductSearch: CatalogProductSearch) {
 
 
-    @Get("/search")
-    fun search(@QueryValue hmsNr: String): List<CompatibleProductResult> {
-        LOG.info("Searching for hmsNr: $hmsNr")
+    @Get("/compatibleWith")
+    fun compatibleWidth(@QueryValue hmsNr: String): List<CompatibleProductResult> {
+        LOG.info("Lookup hmsNr: $hmsNr")
         val doc = catalogProductSearch.lookupWithQuery("catalogproducts", null, hmsNr)
-        val jsonQuery = buildJsonQuery(doc.seriesTitle, doc.postNr, doc.iso)
+        val jsonQuery = buildJsonQuery(doc.title, doc.postNr, doc.iso)
         LOG.info("Query: $jsonQuery")
-        return catalogProductSearch.searchWithBodyResult("catalogproducts", null, jsonQuery!!)
+        return catalogProductSearch.searchWithBodyResult("catalogproducts", null, jsonQuery)
     }
 
     private fun buildJsonQuery(title:String, postNr: List<String>, iso: String): String {
@@ -83,9 +82,3 @@ class CatalogProductSearchController(private val catalogProductSearch: CatalogPr
         private val LOG = LoggerFactory.getLogger(CatalogProductSearchController::class.java)
     }
 }
-
-@Introspected
-data class SearchRequest(
-    val hmsArtNr: String,
-)
-

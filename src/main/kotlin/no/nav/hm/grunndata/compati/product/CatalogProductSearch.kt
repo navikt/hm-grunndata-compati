@@ -49,6 +49,8 @@ class CatalogProductSearch(private val restClient: RestClient, private val objec
         }
     }
 
+
+
     private fun newRequest(method: String, endpoint: String, params: Map<String, String>?, entity: StringEntity? ): Request {
         val request = Request(method, endpoint)
         params?.forEach(request::addParameter)

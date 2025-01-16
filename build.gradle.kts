@@ -13,6 +13,8 @@ val kotestVersion = "5.5.5"
 val openSearchJavaClientVersion = "2.18.0"
 val openSearchRestClientVersion = "2.18.0"
 val opensearchTestContainerVersion = "2.1.1"
+val rapidsRiversVersion = "202410290928"
+val grunndataDtoVersion = "202501161310"
 
 group = "no.nav.hm"
 version = properties["version"] ?: "local-build"
@@ -58,6 +60,11 @@ dependencies {
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")
 
+    // Rapids and Rivers
+    implementation("com.github.navikt:hm-rapids-and-rivers-v2-core:$rapidsRiversVersion")
+    implementation("com.github.navikt:hm-rapids-and-rivers-v2-micronaut:$rapidsRiversVersion")
+    implementation("com.github.navikt:hm-rapids-and-rivers-v2-micronaut-deadletter:$rapidsRiversVersion")
+    implementation("no.nav.hm.grunndata:hm-grunndata-rapid-dto:$grunndataDtoVersion")
 
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.micronaut.test:micronaut-test-kotest5")

@@ -2,9 +2,12 @@ package no.nav.hm.grunndata.compati.product
 
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.micronaut.test.annotation.MockBean
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
+import io.mockk.mockk
 
 import java.util.UUID
+import no.nav.hm.rapids_rivers.micronaut.RapidPushService
 import org.junit.jupiter.api.Test
 
 import org.slf4j.LoggerFactory
@@ -15,6 +18,9 @@ class OpensearchIndexerTest(
     private val osContainer: OSContainer
 
 ) {
+
+    @MockBean(RapidPushService::class)
+    fun rapidPushService(): RapidPushService = mockk(relaxed = true)
 
     @Test
     fun testProductIndexer() {
