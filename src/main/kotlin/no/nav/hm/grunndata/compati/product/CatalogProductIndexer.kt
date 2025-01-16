@@ -94,7 +94,7 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
     fun index(docs: List<CatalogProductDoc>, indexName: String="catalogproducts"): BulkResponse {
         val operations = docs.map { document ->
             BulkOperation.Builder().index(
-                IndexOperation.of { it.index(indexName).id(document.id.toString()).document(document) }
+                IndexOperation.of { it.index(indexName).id(document.id).document(document) }
             ).build()
         }
         val bulkRequest = BulkRequest.Builder()
