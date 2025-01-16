@@ -13,12 +13,12 @@ class CompatibleCatalogProductController(private val catalogProductSearch: Catal
     fun compatibleWidth(@QueryValue hmsNr: String): List<CompatibleProductResult> {
         LOG.info("Lookup hmsNr: $hmsNr")
         val doc = catalogProductSearch.lookupWithQuery("catalogproducts", null, hmsNr)
-        val jsonQuery = buildJsonQuery(doc.title, doc.postNr, doc.iso)
+        val jsonQuery = buildJsonQuery(doc.title, doc.postNr, doc.iso, doc.orderRef)
         LOG.info("Query: $jsonQuery")
         return catalogProductSearch.searchWithBodyResult("catalogproducts", null, jsonQuery)
     }
 
-    private fun buildJsonQuery(title:String, postNr: List<String>, iso: String): String {
+    private fun buildJsonQuery(title:String, postNr: List<String>, iso: String, orderRef: String): String {
         return """
         {
           "query": {
@@ -52,6 +52,13 @@ class CompatibleCatalogProductController(private val catalogProductSearch: Catal
                           }
                         }
                       },
+                      {
+                        "term": {
+                          "orderRef": {
+                            "value": "$orderRef"
+                          }
+                        }
+                      },                      
                       {
                         "bool": {
                           "should": [
