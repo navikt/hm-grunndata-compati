@@ -1,0 +1,46 @@
+apiVersion: "nais.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: hm-grunndata-compati
+  namespace: teamdigihot
+  labels:
+    team: teamdigihot
+spec:
+  image: {{ image }}
+  port: 8080
+  liveness:
+    path: /internal/isAlive
+    initialDelay: 20
+  readiness:
+    path: /internal/isReady
+    initialDelay: 20
+  replicas:
+    min: {{ min_replicas }}
+    max: {{ max_replicas }}
+    cpuThresholdPercentage: 50
+  resources:
+    limits:
+      memory: 1536Mi
+    requests:
+      cpu: 200m
+      memory: 128Mi
+  prometheus:
+    enabled: true
+    path: /internal/prometheus
+  openSearch:
+    access: admin
+    instance: grunndata
+  env:
+    - name: RAPIDSANDRIVERS_ENABLED
+      value: "{{ rapidsandrivers_enabled }}"
+    - name: GRUNNDATA_REGISTER_URL
+      value: "http://hm-grunndata-register/admreg"
+    - name: JDK_JAVA_OPTIONS
+      value: "{{java_opts}}"
+  kafka:
+    pool: {{ kafka_cluster }}
+  leaderElection: true
+  accessPolicy:
+    outbound:
+      rules:
+        - application: hm-grunndata-register
