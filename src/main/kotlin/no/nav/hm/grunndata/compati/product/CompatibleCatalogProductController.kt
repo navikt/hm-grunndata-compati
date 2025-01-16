@@ -6,7 +6,7 @@ import io.micronaut.http.annotation.QueryValue
 import org.slf4j.LoggerFactory
 
 @Controller("/catalog/product")
-class CatalogProductSearchController(private val catalogProductSearch: CatalogProductSearch) {
+class CompatibleCatalogProductController(private val catalogProductSearch: CatalogProductSearch) {
 
 
     @Get("/compatibleWith")
@@ -79,6 +79,6 @@ class CatalogProductSearchController(private val catalogProductSearch: CatalogPr
     }
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(CatalogProductSearchController::class.java)
+        private val LOG = LoggerFactory.getLogger(CompatibleCatalogProductController::class.java)
     }
 }
