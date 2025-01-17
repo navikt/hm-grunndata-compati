@@ -85,7 +85,7 @@ micronaut {
 }
 
 application {
-    mainClass.set("no.nav.hm.grunndata.sachooser.Application")
+    mainClass.set("no.nav.hm.grunndata.compati.Application")
 }
 
 java {
