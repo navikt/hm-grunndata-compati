@@ -17,8 +17,6 @@ import org.apache.http.impl.nio.client.HttpAsyncClientBuilder
 import org.opensearch.client.RestClient
 import org.opensearch.client.json.jackson.JacksonJsonpMapper
 import org.opensearch.client.opensearch.OpenSearchClient
-import org.opensearch.client.transport.OpenSearchTransport
-import org.opensearch.client.transport.httpclient5.ApacheHttpClient5TransportBuilder
 import org.opensearch.client.transport.rest_client.RestClientTransport
 import org.slf4j.LoggerFactory
 
@@ -91,7 +89,7 @@ class OpenSearchConfig(private val openSearchEnv: OpenSearchEnv, private val obj
 }
 
 @ConfigurationProperties("opensearch")
-class OpenSearchEnv {
+open class OpenSearchEnv {
     var user: String = "admin"
     var password: String = "admin"
     var url: String = "https://localhost:9200"
