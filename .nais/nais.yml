@@ -44,3 +44,6 @@ spec:
     outbound:
       rules:
         - application: hm-grunndata-register
+    inbound:
+      rules:
+        - application: hm-grunndata-register
