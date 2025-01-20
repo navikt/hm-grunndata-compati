@@ -72,7 +72,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
     testImplementation("org.testcontainers:testcontainers:$tcVersion")
-    //testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestContainerVersion")
+    testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestContainerVersion")
 }
 
 micronaut {

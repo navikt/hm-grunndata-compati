@@ -4,10 +4,10 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 
-@Controller("/catalog/product")
+@Controller("/catalog/product/index")
 class CatalogProductIndexerController(private val productIndexer: CatalogProductIndexer) {
 
-    @Post("/index")
+    @Post("/")
     suspend fun index(@QueryValue orderRef: String?) {
         println("Indexing catalog product with orderRef: $orderRef")
         productIndexer.indexProducts(orderRef)
