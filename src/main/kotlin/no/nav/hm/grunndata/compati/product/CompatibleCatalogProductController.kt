@@ -5,7 +5,7 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.QueryValue
 import org.slf4j.LoggerFactory
 
-@Controller("/catalog/product")
+@Controller("/catalog/products")
 class CompatibleCatalogProductController(private val catalogProductSearch: CatalogProductSearch,
                                          private val queryBuilder: QueryBuilder) {
 

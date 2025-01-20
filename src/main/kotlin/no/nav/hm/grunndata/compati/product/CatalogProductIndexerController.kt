@@ -4,7 +4,7 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 
-@Controller("/catalog/product/index")
+@Controller("/catalog/products/index")
 class CatalogProductIndexerController(private val productIndexer: CatalogProductIndexer) {
 
     @Post("/")
