@@ -11,11 +11,10 @@ class CompatibleCatalogProductController(private val catalogProductSearch: Catal
 
 
     @Get("/compatibleWith")
-    fun compatibleWidth(@QueryValue hmsNr: String, @QueryValue variant: Boolean? = false): List<CompatibleProductResult> {
+    fun compatibleWidth(@QueryValue hmsNr: String, @QueryValue(defaultValue = "false") variant: Boolean? = false): List<CompatibleProductResult> {
         LOG.info("Lookup hmsNr: $hmsNr with variant: $variant")
         val doc = catalogProductSearch.lookupWithQuery("catalogproducts", null, hmsNr)
         val jsonQuery = queryBuilder.buildJsonQueryForCompatibleWithSearch(doc.title, doc.postNr, doc.iso, doc.orderRef, !variant!!)
-        LOG.info("Query: $jsonQuery")
         return catalogProductSearch.searchWithBodyResult("catalogproducts", null, jsonQuery)
     }
 

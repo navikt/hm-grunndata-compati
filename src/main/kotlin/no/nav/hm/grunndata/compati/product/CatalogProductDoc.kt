@@ -36,7 +36,7 @@ fun CatalogSeriesInfo.toDoc() = CatalogProductDoc(
     orderRef = this.orderRef,
     hmsArtNr = this.hmsArtNr,
     iso = this.iso,
-    postNr = parsedelkontraktNr(this.postNr!!).map { it.first},
+    postNr = parsedelkontraktNr(this.postNr).map { it.first},
     title = this.title,
     seriesTitle = this.seriesTitle,
     seriesId = this.seriesId,
@@ -53,7 +53,7 @@ val delKontraktRegex = Regex("d(\\d+)([A-Q-STU-Z]*)r*(\\d*),*")
 fun parsedelkontraktNr(subContractNr: String): List<Pair<String, Int>> {
     try {
         val cleanSubContractNr = subContractNr.replace("\\s".toRegex(), "")
-        if (cleanSubContractNr.isNullOrBlank()) return mutableListOf("99" to 99) // default no post and rank
+        if (cleanSubContractNr.isBlank()) return mutableListOf("99" to 99) // default no post and rank
         var matchResult = delKontraktRegex.find(cleanSubContractNr)
         val mutableList: MutableList<Pair<String, Int>> = mutableListOf()
         if (matchResult != null) {
