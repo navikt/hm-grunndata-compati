@@ -26,7 +26,9 @@ data class CatalogProductDoc (
 data class CompatibleProductResult(
     val score: Double,
     val seriesTitle: String,
-    val seriesId: String
+    val seriesId: String,
+    val productId: String,
+    val hmsArtNr: String,
 )
 
 fun CatalogSeriesInfo.toDoc() = CatalogProductDoc(

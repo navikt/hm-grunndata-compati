@@ -29,7 +29,10 @@ class CatalogProductSearch(private val restClient: RestClient, private val objec
                 score = it.get("_score").asDouble(),
                 seriesTitle = it.get("_source").get("seriesTitle").asText(),
                 seriesId = it.get("_source").get("seriesId").asText(),
-            ) }
+                productId = it.get("_source").get("productId").asText(),
+                hmsArtNr = it.get("_source").get("hmsArtNr").asText()
+                )
+            }
         } catch (e: ConnectException) {
             LOG.error("No connection to Opensearch", e)
             throw e
