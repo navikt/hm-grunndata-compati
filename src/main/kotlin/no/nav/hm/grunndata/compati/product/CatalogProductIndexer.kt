@@ -1,8 +1,11 @@
 package no.nav.hm.grunndata.compati.product
 
+import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import java.io.StringReader
 import java.time.LocalDate
+import no.nav.hm.grunndata.compati.product.CatalogProductIndexerController.Companion
+import no.nav.hm.grunndata.rapid.dto.CatalogFileStatus
 import org.opensearch.client.opensearch.OpenSearchClient
 import org.opensearch.client.opensearch._types.Refresh
 import org.opensearch.client.opensearch._types.mapping.TypeMapping
@@ -87,9 +90,17 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
     }
     suspend fun indexProducts(orderRef: String? = null) {
         val products = registerClient.fetchCatalogImport(orderRef = orderRef ).map { it.toDoc() }
-        LOG.info("Indexing ${products.size} catalog products")
+        LOG.info("Indexing ${products.size} catalog products for orderRef: $orderRef")
         index(products, "catalogproducts")
     }
+
+    suspend fun indexAll() {
+        LOG.info("Indexing all catalog products")
+        val catalogProducts = registerClient.fetchCatalogFilesByStatus(Pageable.from(0, 1000), CatalogFileStatus.DONE)
+            .content.map { it.orderRef }.distinct()
+        catalogProducts.forEach { indexProducts(it) }
+    }
+
 
     fun index(docs: List<CatalogProductDoc>, indexName: String="catalogproducts"): BulkResponse {
         val operations = docs.map { document ->
