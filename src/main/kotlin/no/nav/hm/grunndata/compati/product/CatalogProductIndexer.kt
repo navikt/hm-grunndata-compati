@@ -26,7 +26,7 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
                             private val registerClient: RegisterClient) {
 
 
-    private val aliasName: String = "catalogproducts"
+
 
     init {
         try {
@@ -91,7 +91,7 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
     suspend fun indexProducts(orderRef: String? = null) {
         val products = registerClient.fetchCatalogImport(orderRef = orderRef ).map { it.toDoc() }
         LOG.info("Indexing ${products.size} catalog products for orderRef: $orderRef")
-        index(products, "catalogproducts")
+        index(products)
     }
 
     suspend fun indexAll() {
@@ -102,7 +102,7 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
     }
 
 
-    fun index(docs: List<CatalogProductDoc>, indexName: String="catalogproducts"): BulkResponse {
+    fun index(docs: List<CatalogProductDoc>, indexName: String = aliasName): BulkResponse {
         val operations = docs.map { document ->
             BulkOperation.Builder().index(
                 IndexOperation.of { it.index(indexName).id(document.id).document(document) }
@@ -131,3 +131,5 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
     }
 
 }
+
+val aliasName: String = "catalogproducts"
