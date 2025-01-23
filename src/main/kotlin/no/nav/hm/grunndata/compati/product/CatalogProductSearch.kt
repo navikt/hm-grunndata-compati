@@ -39,14 +39,19 @@ class CatalogProductSearch(private val restClient: RestClient, private val objec
         }
     }
 
-    fun lookupWithQuery(index:String, params: Map<String, String>?, hmsNr: String): CatalogProductDoc {
+    fun lookupWithQuery(index:String, params: Map<String, String>?, hmsNr: String): CatalogProductDoc? {
         return try {
             val request: Request = newRequest("GET", "/$index/_doc/$hmsNr", params, null)
+            val result =  restClient.performRequest(request)
+            if (result.statusLine.statusCode == 404) {
+                LOG.warn("Not found for hmsNr: $hmsNr")
+                return null
+            }
             val responseEntity: HttpEntity = restClient.performRequest(request).entity
             val jsonString = EntityUtils.toString(responseEntity)
             val json = objectMapper.readTree(jsonString).get("_source")
             return objectMapper.treeToValue(json, CatalogProductDoc::class.java)
-        } catch (e: ConnectException) {
+        } catch (e: Exception) {
             LOG.error("No connection to Opensearch", e)
             throw e
         }
