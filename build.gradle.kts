@@ -14,7 +14,7 @@ val openSearchJavaClientVersion = "2.18.0"
 val openSearchRestClientVersion = "2.18.0"
 val opensearchTestContainerVersion = "2.1.1"
 val rapidsRiversVersion = "202410290928"
-val grunndataDtoVersion = "202501161310"
+val grunndataDtoVersion = "202501230921"
 
 group = "no.nav.hm"
 version = properties["version"] ?: "local-build"
