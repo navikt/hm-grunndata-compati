@@ -40,7 +40,7 @@ class CatalogFileRiver(
         val dto = objectMapper.treeToValue(packet["payload"], CatalogFileRapidDTO::class.java)
         LOG.info("Received catalog file registration for catalogId: ${dto.orderRef} with supplierId: ${dto.supplierId}  eventId $eventId eventTime: $createdTime")
         runBlocking {
-            if (dto.status == CatalogFileStatus.PERSISTED) {
+            if (dto.status == CatalogFileStatus.DONE) {
                 catalogProductIndexer.indexProducts(dto.orderRef)
             }
         }

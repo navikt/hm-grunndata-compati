@@ -6,6 +6,7 @@ import jakarta.inject.Singleton
 class QueryBuilder() {
 
     fun buildJsonQueryForCompatibleWithSearch(title:String, postNr: List<String>, iso: String, orderRef: String, collapse: Boolean = true): String {
+        val cleanTitle = title.replace("\"", "").replace("'", "")
         return """
         {
           "query": {
@@ -19,7 +20,7 @@ class QueryBuilder() {
                           "fields": [
                             "seriesTitle"
                           ],
-                          "like": "$title",
+                          "like": "$cleanTitle",
                           "min_term_freq": 1,
                           "max_query_terms": 25,
                           "min_doc_freq": 1
