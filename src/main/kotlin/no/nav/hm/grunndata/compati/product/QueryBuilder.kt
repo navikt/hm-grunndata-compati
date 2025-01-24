@@ -23,7 +23,8 @@ class QueryBuilder() {
                           "like": "$cleanTitle",
                           "min_term_freq": 1,
                           "max_query_terms": 25,
-                          "min_doc_freq": 1
+                          "min_doc_freq": 1,
+                          "max_doc_freq": 50
                         }
                       },
                       {
