@@ -24,7 +24,7 @@ class QueryBuilder() {
                           "min_term_freq": 1,
                           "max_query_terms": 25,
                           "min_doc_freq": 1,
-                          "max_doc_freq": 50
+                          "max_doc_freq": 500
                         }
                       },
                       {
