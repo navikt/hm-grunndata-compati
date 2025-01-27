@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 import no.nav.hm.grunndata.rapid.dto.CatalogFileStatus
 
-@Client("\${grunndata.register.url}/internal/catalog/import/")
+@Client("\${grunndata.register.url}/internal/catalog/import")
 interface RegisterClient {
 
     @Get(uri ="/", consumes = [APPLICATION_JSON])
@@ -25,6 +25,10 @@ interface RegisterClient {
         pageable: Pageable,
         status: CatalogFileStatus,
     ): Slice<CatalogFileDTO>
+
+    @Get("/hmsnr/{hmsNr}", consumes = [APPLICATION_JSON])
+    suspend fun fetchCatalogImportByHmsNr(hmsNr: String): CatalogSeriesInfo?
+
 }
 
 @Introspected

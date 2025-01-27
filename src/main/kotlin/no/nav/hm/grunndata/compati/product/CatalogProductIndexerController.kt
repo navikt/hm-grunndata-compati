@@ -11,9 +11,15 @@ class CatalogProductIndexerController(private val productIndexer: CatalogProduct
 
     @Post("/")
     suspend fun index(@QueryValue orderRef: String?) {
-        println("Indexing catalog product with orderRef: $orderRef")
+        LOG.info("Indexing catalog product with orderRef: $orderRef")
         productIndexer.indexProducts(orderRef)
 
+    }
+
+    @Post("/hmsNr/{hmsNr}")
+    suspend fun indexWithHmsNr(hmsNr: String) {
+        LOG.info("Indexing catalog product with hmsNr: $hmsNr")
+        productIndexer.indexProductByHmsNr(hmsNr)
     }
 
     @Post("/all")

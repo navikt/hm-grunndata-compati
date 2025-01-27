@@ -94,6 +94,13 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
         index(products)
     }
 
+    suspend fun indexProductByHmsNr(hmsNr: String) {
+        registerClient.fetchCatalogImportByHmsNr(hmsNr = hmsNr)?.let { product->
+            LOG.info("Indexing $hmsNr catalog products for hmsNr: $hmsNr")
+            index(listOf(product.toDoc()))
+        }
+    }
+
     suspend fun indexAll() {
         LOG.info("Indexing all catalog products")
         val catalogProducts = registerClient.fetchCatalogFilesByStatus(Pageable.from(0, 1000), CatalogFileStatus.DONE)
