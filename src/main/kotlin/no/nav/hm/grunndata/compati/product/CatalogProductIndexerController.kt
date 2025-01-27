@@ -16,7 +16,7 @@ class CatalogProductIndexerController(private val productIndexer: CatalogProduct
 
     }
 
-    @Post("/hmsNr/{hmsNr}")
+    @Post("/hmsnr/{hmsNr}")
     suspend fun indexWithHmsNr(hmsNr: String) {
         LOG.info("Indexing catalog product with hmsNr: $hmsNr")
         productIndexer.indexProductByHmsNr(hmsNr)
