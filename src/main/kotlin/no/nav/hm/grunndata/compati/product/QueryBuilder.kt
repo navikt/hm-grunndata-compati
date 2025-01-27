@@ -3,7 +3,7 @@ package no.nav.hm.grunndata.compati.product
 import jakarta.inject.Singleton
 
 @Singleton
-class QueryBuilder() {
+class QueryBuilder {
 
     fun buildJsonQueryForCompatibleWithSearch(title:String, postNr: List<String>, iso: String, orderRef: String, collapse: Boolean = true): String {
         val cleanTitle = title.replace("\"", "").replace("'", "")
@@ -47,31 +47,31 @@ class QueryBuilder() {
                             "value": "$orderRef"
                           }
                         }
-                      },                      
-                      {
-                        "bool": {
-                          "should": [
-                            {
-                              "terms": {
-                                "postNr": [
-                                    ${postNr.joinToString(",")}
-                                ]
-                              }
-                            }
-                          ]
-                        }
-                      }
+                      }                      
+                     ${ if (postNr.isNotEmpty()) ",             {\n" +
+                "                        \"bool\": {\n" +
+                "                          \"should\": [\n" +
+                "                            {\n" +
+                "                              \"terms\": {\n" +
+                "                                \"postNr\": [\n" +
+                "                                    ${postNr.joinToString(",")}\n" +
+                "                                ]\n" +
+                "                              }\n" +
+                "                            }\n" +
+                "                          ]\n" +
+                "                        }\n" +
+                "                      }" else ""}
+        
                     ]
                   }
                 }
               ]
             }
-          },
-          ${ if (collapse) "\"collapse\": {\n" +
+          }
+          ${ if (collapse) ",\"collapse\": {\n" +
                 "            \"field\": \"seriesId\"\n" +
-                "          }," else ""}
-        
-          "size": 500
+                "          }" else ""}      
+          ,"size": 500
         }""".trimIndent()
     }
 }
