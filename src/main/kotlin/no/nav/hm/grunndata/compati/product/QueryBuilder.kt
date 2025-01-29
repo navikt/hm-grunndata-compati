@@ -18,7 +18,7 @@ class QueryBuilder {
                       {
                         "more_like_this": {
                           "fields": [
-                            "seriesTitle"
+                            "title"
                           ],
                           "like": "$cleanTitle",
                           "min_term_freq": 1,
