@@ -39,7 +39,7 @@ class CatalogProductSearch(private val restClient: RestClient, private val objec
         }
     }
 
-    fun lookupWithQuery(index:String, params: Map<String, String>?, hmsNr: String): CatalogProductDoc? {
+    fun lookupHmsNrWithQuery(index:String, params: Map<String, String>?, hmsNr: String): CatalogProductDoc? {
         return try {
             val request: Request = newRequest("GET", "/$index/_doc/$hmsNr", params, null)
             val result =  restClient.performRequest(request)
