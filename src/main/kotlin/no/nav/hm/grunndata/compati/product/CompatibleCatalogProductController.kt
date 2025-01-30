@@ -25,6 +25,7 @@ class CompatibleCatalogProductController(private val catalogProductSearch: Catal
             return catalogProductSearch.searchWithBodyResult(aliasName, null, jsonQuery)
         }
         else {
+            LOG.info("Could not find compatible products for : $hmsNr")
             return emptyList()
         }
     }
