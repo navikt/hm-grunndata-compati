@@ -6,6 +6,7 @@ import jakarta.inject.Singleton
 class QueryBuilder {
 
     fun buildJsonQueryForCompatibleWithSearch(title:String, postNr: List<String>, iso: String, orderRef: String, collapse: Boolean = true): String {
+        val postNrFilter = postNr.filterNot { it == "99" }
         val cleanTitle = title.replace("\"", "").replace("'", "")
         return """
         {
@@ -48,13 +49,13 @@ class QueryBuilder {
                           }
                         }
                       }                      
-                     ${ if (postNr.isNotEmpty()) ",             {\n" +
+                     ${ if (postNrFilter.isNotEmpty()) ",             {\n" +
                 "                        \"bool\": {\n" +
                 "                          \"should\": [\n" +
                 "                            {\n" +
                 "                              \"terms\": {\n" +
                 "                                \"postNr\": [\n" +
-                "                                    ${postNr.joinToString(",")}\n" +
+                "                                    ${postNrFilter.joinToString(",")}\n" +
                 "                                ]\n" +
                 "                              }\n" +
                 "                            }\n" +

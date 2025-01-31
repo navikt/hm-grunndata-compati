@@ -22,7 +22,7 @@ class QueryBuilderTest(private val queryBuilder: QueryBuilder,
         println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(json))
 
         val title2 = "Senggrind 50 topputløser H seng Opus 90EW/120EW"
-        val postNr2 = emptyList<String>()
+        val postNr2 = listOf("99")
         val iso2 = "18121010"
         val orderRef2 = "3576215"
         val collapse2 = true
