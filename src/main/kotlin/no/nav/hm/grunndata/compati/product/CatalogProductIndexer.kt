@@ -4,15 +4,18 @@ import io.micronaut.data.model.Pageable
 import jakarta.inject.Singleton
 import java.io.StringReader
 import java.time.LocalDate
-import no.nav.hm.grunndata.compati.product.CatalogProductIndexerController.Companion
 import no.nav.hm.grunndata.rapid.dto.CatalogFileStatus
 import org.opensearch.client.opensearch.OpenSearchClient
+import org.opensearch.client.opensearch._types.FieldValue
 import org.opensearch.client.opensearch._types.Refresh
 import org.opensearch.client.opensearch._types.mapping.TypeMapping
 import org.opensearch.client.opensearch.core.BulkRequest
 import org.opensearch.client.opensearch.core.BulkResponse
+import org.opensearch.client.opensearch.core.ReindexRequest
 import org.opensearch.client.opensearch.core.bulk.BulkOperation
 import org.opensearch.client.opensearch.core.bulk.IndexOperation
+import org.opensearch.client.opensearch.core.reindex.Destination
+import org.opensearch.client.opensearch.core.reindex.Source
 import org.opensearch.client.opensearch.indices.CreateIndexRequest
 import org.opensearch.client.opensearch.indices.ExistsAliasRequest
 import org.opensearch.client.opensearch.indices.GetAliasRequest
@@ -88,7 +91,7 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
         LOG.info("update for alias $aliasName and pointing to $indexName with status: $ack")
         return ack
     }
-    suspend fun indexProducts(orderRef: String? = null) {
+    suspend fun indexProducts(orderRef: String) {
         val products = registerClient.fetchCatalogImport(orderRef = orderRef ).map { it.toDoc() }
         LOG.info("Indexing ${products.size} catalog products for orderRef: $orderRef")
         index(products)
@@ -99,6 +102,16 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
             LOG.info("Indexing $hmsNr catalog products for hmsNr: $hmsNr")
             index(listOf(product.toDoc()))
         }
+    }
+
+    fun copyIndex(fromIndex: String, orderRef: String) {
+        val reindexRequest = ReindexRequest.Builder()
+            .source(Source.Builder().index(fromIndex).query {
+               it.term { term -> term.field("orderRef").value(FieldValue.of(orderRef)) }
+            }.build())
+            .dest(Destination.Builder().index(orderRef).build())
+            .build()
+        val response = client.reindex(reindexRequest)
     }
 
     suspend fun indexAll() {

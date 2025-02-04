@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 class CatalogProductIndexerController(private val productIndexer: CatalogProductIndexer){
 
     @Post("/")
-    suspend fun index(@QueryValue orderRef: String?) {
+    suspend fun index(@QueryValue orderRef: String) {
         LOG.info("Indexing catalog product with orderRef: $orderRef")
         productIndexer.indexProducts(orderRef)
 
@@ -30,4 +30,6 @@ class CatalogProductIndexerController(private val productIndexer: CatalogProduct
     companion object {
         private val LOG = LoggerFactory.getLogger(CatalogProductIndexerController::class.java)
     }
+
+
 }
