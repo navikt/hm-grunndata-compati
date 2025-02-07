@@ -20,6 +20,7 @@ data class CatalogSeriesInfo(
     val seriesTitle: String,
     val seriesId: UUID,
     val productId: UUID?,
+    val agreementId: UUID,
     val created: LocalDateTime,
     val updated: LocalDateTime
 )

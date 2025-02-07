@@ -19,6 +19,7 @@ data class CatalogProductDoc (
     val mainProduct: Boolean,
     val sparePart: Boolean,
     val accessory: Boolean,
+    val agreementId: UUID,
     val created: LocalDateTime = LocalDateTime.now(),
     val updated: LocalDateTime = LocalDateTime.now()
 )
@@ -47,8 +48,10 @@ fun CatalogSeriesInfo.toDoc() = CatalogProductDoc(
     sparePart = this.sparePart,
     accessory = this.accessory,
     created = this.created,
-    updated = this.updated
+    updated = this.updated,
+    agreementId = this.agreementId
 )
+
 val delKontraktRegex = Regex("d(\\d+)([A-Q-STU-Z]*)r*(\\d*),*")
 
 fun parsedelkontraktNr(subContractNr: String): List<Pair<String, Int>> {

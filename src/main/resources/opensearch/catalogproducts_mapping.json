@@ -42,6 +42,9 @@
     "seriesId": {
       "type": "keyword"
     },
+    "agreementId": {
+      "type": "keyword"
+    },
     "productId": {
       "type": "keyword"
     },
