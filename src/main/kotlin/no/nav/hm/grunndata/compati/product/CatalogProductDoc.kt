@@ -25,7 +25,7 @@ data class CatalogProductDoc (
 )
 
 data class CompatibleProductResult(
-    val score: Double,
+    val score: Double = 0.0,
     val title: String,
     val seriesTitle: String,
     val seriesId: String,

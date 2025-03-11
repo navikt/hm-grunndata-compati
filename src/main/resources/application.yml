@@ -63,6 +63,11 @@ opensearch:
   user: ${OPEN_SEARCH_USERNAME:admin}
   url: ${OPEN_SEARCH_URI:`https://localhost:9200`}
 
+vertexai:
+  model: ${VERTEXAI_MODEL_NAME:gemini-2.0-flash-001}
+  location: ${VERTEXAI_LOCATION:europe-north1}
+  project: ${VERTEXAI_PROJECT_ID:teamdigihot-dev-9705}
+
 catalogproducts:
   aliasName: ${CATALOGPRODUCTS_ALIASNAME:catalogproducts}
 
@@ -72,6 +77,9 @@ grunndata:
 
 elector:
   path: ${ELECTOR_PATH:localhost}
+
+rapidsandrivers:
+  enabled: ${RAPIDSANDRIVERS_ENABLED:false}
 
 kafka:
   topic: teamdigihot.hm-grunndata-v1

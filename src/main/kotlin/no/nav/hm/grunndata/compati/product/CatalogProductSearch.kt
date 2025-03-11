@@ -26,7 +26,6 @@ class CatalogProductSearch(private val restClient: RestClient, private val objec
             val json =  objectMapper.readTree(jsonString)
             val hits = json.get("hits").get("hits")
             hits.map { CompatibleProductResult(
-                score = it.get("_score").asDouble(),
                 title = it.get("_source").get("title").asText(),
                 seriesTitle = it.get("_source").get("seriesTitle").asText(),
                 seriesId = it.get("_source").get("seriesId").asText(),

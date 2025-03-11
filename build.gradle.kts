@@ -73,6 +73,9 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
     testImplementation("org.testcontainers:testcontainers:$tcVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestContainerVersion")
+
+    implementation(platform("com.google.cloud:libraries-bom:26.55.0"))
+    implementation("com.google.cloud:google-cloud-vertexai")
 }
 
 micronaut {

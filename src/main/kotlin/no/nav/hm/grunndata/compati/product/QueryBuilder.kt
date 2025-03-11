@@ -5,7 +5,73 @@ import jakarta.inject.Singleton
 @Singleton
 class QueryBuilder {
 
-    fun buildJsonQueryForCompatibleWithSearch(title:String, postNr: List<String>, iso: String, orderRef: String, collapse: Boolean = true): String {
+    fun buildJsonQueryLookupMainByOrderRef(orderRef: String): String {
+
+        return """
+{
+  "query": {
+          "bool": {
+            "must": [
+              {
+                "term": {
+                  "mainProduct": {
+                    "value": true
+                  }
+                }
+              },
+              {
+                "term": {
+                  "orderRef": {
+                    "value": "$orderRef"
+                  }
+                }
+              }
+            ]
+          }
+  },
+  "collapse": {
+      "field": "seriesId"
+  }, 
+  
+  "size": 500
+}""".trimIndent()
+    }
+
+    fun buildJsonQueryLookupMainBySeriesId(seriesId: String): String {
+
+        return """
+{
+  "query": {
+          "bool": {
+            "must": [
+              {
+                "term": {
+                  "mainProduct": {
+                    "value": true
+                  }
+                }
+              },
+              {
+                "term": {
+                  "seriesId": {
+                    "value": "$seriesId"
+                  }
+                }
+              }
+            ]
+          }
+  },
+  "size": 500
+}""".trimIndent()
+    }
+
+    fun buildJsonQueryForCompatibleWithSearch(
+        title: String,
+        postNr: List<String>,
+        iso: String,
+        orderRef: String,
+        collapse: Boolean = true
+    ): String {
         val postNrFilter = postNr.filterNot { it == "99" }
         val cleanTitle = title.replace("\"", "").replace("'", "")
         return """
@@ -49,19 +115,21 @@ class QueryBuilder {
                           }
                         }
                       }                      
-                     ${ if (postNrFilter.isNotEmpty()) ",             {\n" +
-                "                        \"bool\": {\n" +
-                "                          \"should\": [\n" +
-                "                            {\n" +
-                "                              \"terms\": {\n" +
-                "                                \"postNr\": [\n" +
-                "                                    ${postNrFilter.joinToString(",")}\n" +
-                "                                ]\n" +
-                "                              }\n" +
-                "                            }\n" +
-                "                          ]\n" +
-                "                        }\n" +
-                "                      }" else ""}
+                     ${
+            if (postNrFilter.isNotEmpty()) ",             {\n" +
+                    "                        \"bool\": {\n" +
+                    "                          \"should\": [\n" +
+                    "                            {\n" +
+                    "                              \"terms\": {\n" +
+                    "                                \"postNr\": [\n" +
+                    "                                    ${postNrFilter.joinToString(",")}\n" +
+                    "                                ]\n" +
+                    "                              }\n" +
+                    "                            }\n" +
+                    "                          ]\n" +
+                    "                        }\n" +
+                    "                      }" else ""
+        }
         
                     ]
                   }
@@ -69,9 +137,11 @@ class QueryBuilder {
               ]
             }
           }
-          ${ if (collapse) ",\"collapse\": {\n" +
-                "            \"field\": \"seriesId\"\n" +
-                "          }" else ""}      
+          ${
+            if (collapse) ",\"collapse\": {\n" +
+                    "            \"field\": \"seriesId\"\n" +
+                    "          }" else ""
+        }      
           ,"size": 500
         }""".trimIndent()
     }
