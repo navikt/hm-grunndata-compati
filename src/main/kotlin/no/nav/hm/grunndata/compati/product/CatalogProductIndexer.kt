@@ -98,10 +98,7 @@ class CatalogProductIndexer(private val client: OpenSearchClient,
     }
 
     suspend fun indexProductByHmsNr(hmsNr: String) {
-        registerClient.fetchCatalogImportByHmsNr(hmsNr = hmsNr)?.let { product->
-            LOG.info("Indexing $hmsNr catalog products for hmsNr: $hmsNr")
-            index(listOf(product.toDoc()))
-        }
+        index(listOf(registerClient.fetchCatalogImportByHmsNr(hmsNr = hmsNr).first().toDoc()))
     }
 
     fun copyIndex(fromIndex: String, orderRef: String) {

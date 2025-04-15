@@ -4,11 +4,10 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.QueryValue
 import no.nav.hm.grunndata.compati.product.compatible.CompatibleAIFinder
-import no.nav.hm.grunndata.compati.product.compatible.HmsNr
 import org.slf4j.LoggerFactory
 
 @Controller("/catalog/products")
-class CompatibleCatalogProductController(private val catalogProductSearch: CatalogProductSearch,
+class CompatibleWithController(private val catalogProductSearch: CatalogProductSearch,
                                          private val queryBuilder: QueryBuilder,
                                          private val compatibleAIFinder: CompatibleAIFinder) {
 
@@ -69,7 +68,7 @@ class CompatibleCatalogProductController(private val catalogProductSearch: Catal
     }
 
     companion object {
-        private val LOG = LoggerFactory.getLogger(CompatibleCatalogProductController::class.java)
+        private val LOG = LoggerFactory.getLogger(CompatibleWithController::class.java)
     }
 
 }

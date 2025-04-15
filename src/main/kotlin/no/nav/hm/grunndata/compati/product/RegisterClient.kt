@@ -27,7 +27,7 @@ interface RegisterClient {
     ): Slice<CatalogFileDTO>
 
     @Get("/hmsnr/{hmsNr}", consumes = [APPLICATION_JSON])
-    suspend fun fetchCatalogImportByHmsNr(hmsNr: String): CatalogSeriesInfo?
+    suspend fun fetchCatalogImportByHmsNr(hmsNr: String): List<CatalogSeriesInfo>
 
 }
 
