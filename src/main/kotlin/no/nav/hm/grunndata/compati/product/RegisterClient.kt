@@ -6,6 +6,7 @@ import io.micronaut.data.model.Pageable
 import io.micronaut.data.model.Slice
 import io.micronaut.http.MediaType.APPLICATION_JSON
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.client.annotation.Client
 import java.time.LocalDateTime
@@ -15,9 +16,9 @@ import no.nav.hm.grunndata.rapid.dto.CatalogFileStatus
 @Client("\${grunndata.register.url}/internal/catalog/import")
 interface RegisterClient {
 
-    @Get(uri ="/", consumes = [APPLICATION_JSON])
+    @Get(uri ="/orderRef/{orderRef}", consumes = [APPLICATION_JSON])
     suspend fun fetchCatalogImport(
-        @QueryValue("orderRef") orderRef: String? = null,
+        @PathVariable("orderRef") orderRef: String? = null,
     ): List<CatalogSeriesInfo>
 
     @Get("/files/status/{status}", consumes = [APPLICATION_JSON])
