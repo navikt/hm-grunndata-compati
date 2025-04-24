@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -23,7 +24,7 @@ plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("kapt") version "1.9.25"
     id("java")
-    id("com.github.johnrengelman.shadow") version "7.1.0"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.micronaut.application") version "4.5.3"
 }
 
@@ -106,6 +107,10 @@ tasks.withType<KotlinCompile> {
 tasks.named<KotlinCompile>("compileTestKotlin") {
     kotlinOptions.jvmTarget = jvmTarget
     kapt.includeCompileClasspath = false
+}
+
+tasks.named<ShadowJar>("shadowJar") {
+    isZip64 = true
 }
 
 tasks.withType<Test> {
