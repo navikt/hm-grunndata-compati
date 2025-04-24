@@ -35,11 +35,16 @@ spec:
       value: "{{ rapidsandrivers_enabled }}"
     - name: GRUNNDATA_REGISTER_URL
       value: "http://hm-grunndata-register/admreg"
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: "/var/run/secrets/credentials/hm-grunndata-compati/secret"
     - name: JDK_JAVA_OPTIONS
       value: "{{java_opts}}"
   kafka:
     pool: {{ kafka_cluster }}
   leaderElection: true
+  filesFrom:
+    - secret: hm-grunndata-compati-credentials
+      mountPath: /var/run/secrets/credentials/hm-grunndata-compati
   accessPolicy:
     outbound:
       rules:
