@@ -3,5 +3,7 @@
   "rapidsandrivers_enabled": true,
   "min_replicas": 1,
   "max_replicas": 1,
-  "java_opts": "-Xms128m -Xmx512m"
+  "java_opts": "-Xms128m -Xmx512m",
+  "vertexai_project_id": "teamdigihot-dev-9705",
+  "vertexai_model_name": "gemini-2.0-flash-001"
 }

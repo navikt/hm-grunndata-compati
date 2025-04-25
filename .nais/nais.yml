@@ -39,6 +39,10 @@ spec:
       value: "/var/run/secrets/credentials/hm-grunndata-compati/secret"
     - name: JDK_JAVA_OPTIONS
       value: "{{java_opts}}"
+    - name: VERTEXAI_MODEL_NAME
+      value: "{{ vertexai_model_name }}"
+    - name: VERTEXAI_PROJECT_ID
+      value: "{{ vertexai_project_id }}"
   kafka:
     pool: {{ kafka_cluster }}
   leaderElection: true
