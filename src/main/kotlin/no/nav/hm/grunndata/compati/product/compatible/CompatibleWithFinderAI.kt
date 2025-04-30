@@ -69,8 +69,8 @@ class CompatibleAIFinder(private val config: VertexAIConfig, private val objectM
 
 @ConfigurationProperties("vertexai")
 open class VertexAIConfig {
-    var model: String = "gemini-2.0-flash-001"
-    var location: String = "global"
+    var model: String = "gemini-2.0-flash-lite-001"
+    var location: String = "europe-north1"
     var project: String = "teamdigihot-dev-9705"
 }
 
