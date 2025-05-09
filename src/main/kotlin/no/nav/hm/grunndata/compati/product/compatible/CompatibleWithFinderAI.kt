@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory
 @Singleton
 class CompatibleAIFinder(private val config: VertexAIConfig, private val objectMapper: ObjectMapper ) {
     val instruction: String = """
-        Du er en tekniker som jobber i en NAV hjelpemiddelsentral, og skal finne hvilket hoved hjelpemiddel som passer best for et tilbehør.
+        Du jobber i en NAV hjelpemiddelsentral, og bruker finnhjelpemiddel.no for informasjon om hjelpemidler.
     """.trimIndent()
 
 
