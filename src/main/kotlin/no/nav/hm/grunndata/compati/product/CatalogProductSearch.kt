@@ -8,21 +8,21 @@ import org.apache.http.HttpEntity
 import org.apache.http.entity.ContentType
 import org.apache.http.entity.StringEntity
 import org.apache.http.util.EntityUtils
-import org.opensearch.client.Request
-import org.opensearch.client.RestClient
+import org.opensearch.client.opensearch.OpenSearchClient
+import org.opensearch.client.opensearch.generic.Request
+import org.opensearch.client.opensearch.generic.Requests
 
 
 import org.slf4j.LoggerFactory
 
 @Singleton
-class CatalogProductSearch(private val restClient: RestClient, private val objectMapper: ObjectMapper) {
+class CatalogProductSearch(private val osClient: OpenSearchClient, private val objectMapper: ObjectMapper) {
 
-    fun searchWithBodyResult(index: String, params: Map<String, String>?, body: String): List<CompatibleProductResult> {
+    fun searchWithBodyResult(index: String, params: Map<String, String>, body: String): List<CompatibleProductResult> {
         return try {
-            val entity = StringEntity(body, ContentType.APPLICATION_JSON)
-            val request: Request = newRequest("POST", "/$index/_search", params, entity)
-            val httpEntity: HttpEntity = restClient.performRequest(request).entity
-            val jsonString = EntityUtils.toString(httpEntity)
+            val request: Request = newRequest("POST", "/$index/_search", params, body)
+            val response =  osClient.generic().execute(request)
+            val jsonString = response.body.get().bodyAsString()
             val json =  objectMapper.readTree(jsonString)
             val hits = json.get("hits").get("hits")
             hits.map { CompatibleProductResult(
@@ -39,16 +39,15 @@ class CatalogProductSearch(private val restClient: RestClient, private val objec
         }
     }
 
-    fun lookupHmsNrWithQuery(index:String, params: Map<String, String>?, hmsNr: String): CatalogProductDoc? {
+    fun lookupHmsNrWithQuery(index:String, params: Map<String, String>, hmsNr: String): CatalogProductDoc? {
         return try {
             val request: Request = newRequest("GET", "/$index/_doc/$hmsNr", params, null)
-            val result =  restClient.performRequest(request)
-            if (result.statusLine.statusCode == 404) {
+            val result =  osClient.generic().execute(request)
+            if (result.status == 404) {
                 LOG.warn("Not found for hmsNr: $hmsNr")
                 return null
             }
-            val responseEntity: HttpEntity = restClient.performRequest(request).entity
-            val jsonString = EntityUtils.toString(responseEntity)
+            val jsonString = result.body.get().bodyAsString()
             val json = objectMapper.readTree(jsonString).get("_source")
             return objectMapper.treeToValue(json, CatalogProductDoc::class.java)
         } catch (e: Exception) {
@@ -59,11 +58,12 @@ class CatalogProductSearch(private val restClient: RestClient, private val objec
 
 
 
-    private fun newRequest(method: String, endpoint: String, params: Map<String, String>?, entity: StringEntity? ): Request {
-        val request = Request(method, endpoint)
-        params?.forEach(request::addParameter)
-        request.entity = entity
-        return request
+    private fun newRequest(method: String, endpoint: String, params: Map<String, String>, body: String?): Request {
+        val requestBuilder = Requests.builder().method(method).endpoint(endpoint).query(params)
+        if (body != null) {
+            requestBuilder.json(body)
+        }
+        return requestBuilder.build()
     }
 
     companion object {

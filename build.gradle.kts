@@ -12,7 +12,7 @@ val tcVersion= "1.20.4"
 val mockkVersion = "1.13.4"
 val kotestVersion = "5.5.5"
 val openSearchJavaClientVersion = "2.18.0"
-val openSearchRestClientVersion = "2.18.0"
+val httpClient5Version = "5.4.1"
 val opensearchTestContainerVersion = "2.1.1"
 val rapidsRiversVersion = "202410290928"
 val grunndataDtoVersion = "202502101053"
@@ -55,8 +55,7 @@ dependencies {
     implementation("io.micronaut:micronaut-http-server-netty")
     implementation("io.micronaut:micronaut-http-client")
     implementation("org.opensearch.client:opensearch-java:$openSearchJavaClientVersion")
-    implementation("org.opensearch.client:opensearch-rest-client:$openSearchRestClientVersion")
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.4.1")
+    implementation("org.apache.httpcomponents.client5:httpclient5:$httpClient5Version")
     implementation("io.micronaut.micrometer:micronaut-micrometer-core")
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")

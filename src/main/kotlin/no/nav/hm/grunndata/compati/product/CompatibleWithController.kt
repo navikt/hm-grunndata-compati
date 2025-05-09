@@ -15,7 +15,7 @@ class CompatibleWithController(private val catalogProductSearch: CatalogProductS
     @Get("/compatibleWith")
     fun compatibleWith(@QueryValue hmsNr: String, @QueryValue(defaultValue = "false") variant: Boolean? = false): List<CompatibleProductResult> {
         LOG.info("Lookup hmsNr: $hmsNr with variant: $variant")
-        val doc = catalogProductSearch.lookupHmsNrWithQuery(aliasName, mapOf("ignore" to "404"), hmsNr)
+        val doc = catalogProductSearch.lookupHmsNrWithQuery(aliasName, emptyMap(), hmsNr)
         if (doc!=null) {
             val jsonQuery = queryBuilder.buildJsonQueryForCompatibleWithSearch(
                 doc.title,
@@ -24,7 +24,7 @@ class CompatibleWithController(private val catalogProductSearch: CatalogProductS
                 doc.orderRef,
                 !variant!!
             )
-            return catalogProductSearch.searchWithBodyResult(aliasName, null, jsonQuery)
+            return catalogProductSearch.searchWithBodyResult(aliasName, emptyMap(), jsonQuery)
         }
         else {
             LOG.info("Could not find compatible products for : $hmsNr")
@@ -35,12 +35,12 @@ class CompatibleWithController(private val catalogProductSearch: CatalogProductS
     @Get("/compatibleWith/ai/series")
     fun compatibleWithAI(@QueryValue hmsNr: String): List<CompatibleProductResult> {
         LOG.info("Lookup hmsNr: $hmsNr with AI")
-        val doc = catalogProductSearch.lookupHmsNrWithQuery(aliasName, mapOf("ignore" to "404"), hmsNr)
+        val doc = catalogProductSearch.lookupHmsNrWithQuery(aliasName, emptyMap(), hmsNr)
         if (doc!=null) {
             LOG.info("accessory with title: ${doc.title}")
             val query =  queryBuilder.buildJsonQueryLookupMainByOrderRef(doc.orderRef)
             LOG.debug(query)
-            val mainProducts = catalogProductSearch.searchWithBodyResult(aliasName, null, query)
+            val mainProducts = catalogProductSearch.searchWithBodyResult(aliasName, emptyMap(), query)
             LOG.info("Got ${mainProducts.size} main products for orderRef: ${doc.orderRef}")
             val hmsnrTitlePair: List<HmsNrTitlePair> = mainProducts.map { HmsNrTitlePair(it.hmsArtNr, it.seriesTitle.trim()) }
             val hmsNrs =  compatibleAIFinder.findCompatibleProducts(doc.title, hmsnrTitlePair)
@@ -53,11 +53,11 @@ class CompatibleWithController(private val catalogProductSearch: CatalogProductS
     @Get("/compatibleWith/ai/variants")
     fun compatibleWithVariantsAI(@QueryValue hmsNr: String, @QueryValue seriesId: String): List<CompatibleProductResult> {
         LOG.info("Lookup hmsNr: $hmsNr with AI for variants")
-        val doc = catalogProductSearch.lookupHmsNrWithQuery(aliasName, mapOf("ignore" to "404"), hmsNr)
+        val doc = catalogProductSearch.lookupHmsNrWithQuery(aliasName, emptyMap(), hmsNr)
         if (doc!=null) {
             LOG.info("Accessory with title: ${doc.title}")
             val query =  queryBuilder.buildJsonQueryLookupMainBySeriesId(seriesId)
-            val mainVariants = catalogProductSearch.searchWithBodyResult(aliasName, null, query)
+            val mainVariants = catalogProductSearch.searchWithBodyResult(aliasName, emptyMap(), query)
             LOG.info("Got ${mainVariants.size} main variants for seriesId: $seriesId")
             val hmsnrTitlePair: List<HmsNrTitlePair> = mainVariants.map { HmsNrTitlePair(it.hmsArtNr, it.title) }
             val hmsNrs =  compatibleAIFinder.findCompatibleProducts(doc.title, hmsnrTitlePair)
