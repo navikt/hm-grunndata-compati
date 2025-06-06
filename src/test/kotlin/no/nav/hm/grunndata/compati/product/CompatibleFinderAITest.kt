@@ -41,7 +41,7 @@ class CompatibleFinderAITest(private val compatibleAIFinder: CompatibleAIFinder)
 
     //@Test
     fun compatibleAiFinderTest2() {
-        val partsTitle = "Pannebånd mrs Kudu hodestøtte anatomisk"
+        val partsTitle = "Driving mrs Rogue2 25\" superlett"
         val mainProducts: List<HmsNrTitlePair> = listOf(
             HmsNrTitlePair("301295", "Rogue2"),
             HmsNrTitlePair("317501", "Catalyst 5"),

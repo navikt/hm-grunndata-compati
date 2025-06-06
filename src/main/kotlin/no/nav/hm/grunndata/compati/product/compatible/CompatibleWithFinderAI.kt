@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory
 @Singleton
 class CompatibleAIFinder(private val config: VertexAIConfig, private val objectMapper: ObjectMapper ) {
     val instruction: String = """
-        Du jobber i en NAV hjelpemiddelsentral, og bruker finnhjelpemiddel.no for informasjon om hjelpemidler.
+        Du jobber i en NAV hjelpemiddelsentral, og bruker finnhjelpemiddel.no for informasjon.
     """.trimIndent()
 
 
@@ -29,8 +29,8 @@ class CompatibleAIFinder(private val config: VertexAIConfig, private val objectM
     }
 
     fun generatePrompt(accessory: String, mainProducts: List<HmsNrTitlePair>): String {
-        val mainProductsString = mainProducts.joinToString("\n") { "hmsnr=${it.hmsNr} '${it.title.replace("'"," ")}'" }
-        return "For følgende tilbehør:\n'${accessory.replace("'", " ")}'\nFinn ut hvilket hjelpemiddel som passer best blant disse hoved hjelpemiddel:\n$mainProductsString"
+        val mainProductsString = mainProducts.joinToString(",") { "hmsnr=${it.hmsNr}: '${it.title.replace("'"," ")}'" }
+        return "For følgende tilbehør: '${accessory.replace("'", " ")}' Finn ut hvilket hjelpemiddel som passer best blant disse: $mainProductsString \n svar med hmsnr"
             .trimIndent().trim()
     }
 
@@ -72,7 +72,7 @@ open class VertexAIConfig {
     var model: String = "gemini-2.0-flash-001"
     var location: String = "europe-north1"
     var project: String = "teamdigihot-dev-9705"
-    var temperature: Float = 0.0f
+    var temperature: Float = 0.1f
 }
 
 @Introspected
