@@ -36,5 +36,29 @@ class CompatibleFinderAITest(private val compatibleAIFinder: CompatibleAIFinder)
         println(compatibleAIFinder.generatePrompt(partsTitle, mainProducts))
         val hmsnrs = compatibleAIFinder.findCompatibleProducts(partsTitle, mainProducts)
         println(hmsnrs)
+
     }
+
+    //@Test
+    // This test needs to be run manually, as it uses the Vertex AI API
+    fun compatibleAiFinderTest2() {
+        val partsTitle = "Pannebånd mrs Kudu hodestøtte anatomisk"
+        val mainProducts: List<HmsNrTitlePair> = listOf(
+            HmsNrTitlePair("301295", "Rogue2"),
+            HmsNrTitlePair("317501", "Catalyst 5"),
+            HmsNrTitlePair("317545", "Crissy"),
+            HmsNrTitlePair("317604", "Xact"),
+            HmsNrTitlePair("317634", "Little Wave Clik"),
+            HmsNrTitlePair("317706", "Kudu"),
+            HmsNrTitlePair("326527", "Cross 5XL"),
+            HmsNrTitlePair("326539", "Cross 6"),
+            HmsNrTitlePair("326555", "Prio (aktiv)"),
+            HmsNrTitlePair("326559", "Cross 6 (ledsagerbrems)"),
+            HmsNrTitlePair("326575", "Prio komfort")
+        )
+        val hmsnrs = compatibleAIFinder.findCompatibleProducts(partsTitle, mainProducts)
+        println(hmsnrs)
+    }
+
+
 }

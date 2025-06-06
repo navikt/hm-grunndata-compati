@@ -74,7 +74,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:$tcVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestContainerVersion")
 
-    implementation(platform("com.google.cloud:libraries-bom:26.55.0"))
+    implementation(platform("com.google.cloud:libraries-bom:26.61.0"))
     implementation("com.google.cloud:google-cloud-vertexai")
 }
 

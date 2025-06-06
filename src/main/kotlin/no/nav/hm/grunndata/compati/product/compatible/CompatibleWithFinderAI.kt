@@ -24,14 +24,13 @@ class CompatibleAIFinder(private val config: VertexAIConfig, private val objectM
 
     fun findCompatibleProducts(partsTitle: String, mainTitles: List<HmsNrTitlePair>): List<HmsNr> {
         val prompt = generatePrompt(partsTitle, mainTitles)
-        LOG.debug("Generated prompt: $prompt")
-        println(prompt)
+        LOG.info("Generated prompt: $prompt")
         return modelGenerateContent(prompt)
     }
 
     fun generatePrompt(accessory: String, mainProducts: List<HmsNrTitlePair>): String {
-        val mainProductsString = mainProducts.map { "hmsnr=${it.hmsNr} ${it.title}" }.joinToString("\n")
-        return "For følgende tilbehør:\n$accessory\nFinn ut hvilket hjelpemiddel som passer best blant disse hoved hjelpemiddel:\n$mainProductsString"
+        val mainProductsString = mainProducts.joinToString("\n") { "hmsnr=${it.hmsNr} '${it.title.replace("'"," ")}'" }
+        return "For følgende tilbehør:\n'${accessory.replace("'", " ")}'\nFinn ut hvilket hjelpemiddel som passer best blant disse hoved hjelpemiddel:\n$mainProductsString"
             .trimIndent().trim()
     }
 
@@ -40,6 +39,7 @@ class CompatibleAIFinder(private val config: VertexAIConfig, private val objectM
         VertexAI(config.project, config.location).use { vertexAI ->
             val generationConfig: GenerationConfig = GenerationConfig.newBuilder()
                 .setResponseMimeType("application/json")
+                .setTemperature(config.temperature)
                 .setResponseSchema(
                     Schema.newBuilder()
                         .setType(Type.ARRAY)
@@ -69,9 +69,10 @@ class CompatibleAIFinder(private val config: VertexAIConfig, private val objectM
 
 @ConfigurationProperties("vertexai")
 open class VertexAIConfig {
-    var model: String = "gemini-2.0-flash-lite-001"
+    var model: String = "gemini-2.0-flash-001"
     var location: String = "europe-north1"
     var project: String = "teamdigihot-dev-9705"
+    var temperature: Float = 0.0f
 }
 
 @Introspected
