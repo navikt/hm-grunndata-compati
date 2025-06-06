@@ -40,7 +40,6 @@ class CompatibleFinderAITest(private val compatibleAIFinder: CompatibleAIFinder)
     }
 
     //@Test
-    // This test needs to be run manually, as it uses the Vertex AI API
     fun compatibleAiFinderTest2() {
         val partsTitle = "Pannebånd mrs Kudu hodestøtte anatomisk"
         val mainProducts: List<HmsNrTitlePair> = listOf(
