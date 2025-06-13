@@ -30,7 +30,7 @@ class CompatibleAIFinder(private val config: VertexAIConfig, private val objectM
 
     fun generatePrompt(accessory: String, mainProducts: List<HmsNrTitlePair>): String {
         val mainProductsString = mainProducts.joinToString(",") { "hmsnr=${it.hmsNr}: '${it.title.replace("'"," ")}'" }
-        return "For følgende tilbehør: '${accessory.replace("'", " ")}' Finn ut hvilket hjelpemiddel som passer best blant disse: $mainProductsString \n svar med hmsnr"
+        return "For følgende tilbehør: '${accessory.replace("'", " ").replace(",", " ")}' Finn ut hvilket hjelpemiddel som passer best blant disse: $mainProductsString \n svar med hmsnr"
             .trimIndent().trim()
     }
 

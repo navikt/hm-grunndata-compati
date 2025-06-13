@@ -41,19 +41,20 @@ class CompatibleFinderAITest(private val compatibleAIFinder: CompatibleAIFinder)
 
     //@Test
     fun compatibleAiFinderTest2() {
-        val partsTitle = "Driving mrs Rogue2 25\" superlett"
+        val partsTitle = "Armlene stol arbeid Vela Tango 700E pute b9 l25 stang l19,3 hreg hø el nedfellbar 11"
         val mainProducts: List<HmsNrTitlePair> = listOf(
-            HmsNrTitlePair("301295", "Rogue2"),
-            HmsNrTitlePair("317501", "Catalyst 5"),
-            HmsNrTitlePair("317545", "Crissy"),
-            HmsNrTitlePair("317604", "Xact"),
-            HmsNrTitlePair("317634", "Little Wave Clik"),
-            HmsNrTitlePair("317706", "Kudu"),
-            HmsNrTitlePair("326527", "Cross 5XL"),
-            HmsNrTitlePair("326539", "Cross 6"),
-            HmsNrTitlePair("326555", "Prio (aktiv)"),
-            HmsNrTitlePair("326559", "Cross 6 (ledsagerbrems)"),
-            HmsNrTitlePair("326575", "Prio komfort")
+            HmsNrTitlePair("323894", "VELA Tango 300ELF"),
+            HmsNrTitlePair("323895", "VELA Tango 310ELF"),
+            HmsNrTitlePair("323896", "VELA Tango 600EL Aktiv Junior"),
+            HmsNrTitlePair("323899", "VELA Tango 700 Aktiv"),
+            HmsNrTitlePair("323902", "VELA Tango 700 Contour"),
+            HmsNrTitlePair("323904", "VELA Tango 700 Support"),
+            HmsNrTitlePair("323906", "VELA Tango 700EL Aktiv"),
+            HmsNrTitlePair("323909", "VELA Tango 700EL Contour"),
+            HmsNrTitlePair("323911", "VELA Tango 700EL Support"),
+            HmsNrTitlePair("323913", "VELA Tango 700ELF Aktiv"),
+            HmsNrTitlePair("323916", "VELA Tango 700F Aktiv"),
+            HmsNrTitlePair("323919", "VELA Salsa")
         )
         val hmsnrs = compatibleAIFinder.findCompatibleProducts(partsTitle, mainProducts)
         println(hmsnrs)
