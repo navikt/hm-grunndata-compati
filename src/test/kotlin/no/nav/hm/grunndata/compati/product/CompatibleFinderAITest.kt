@@ -27,11 +27,10 @@ class CompatibleFinderAITest(private val compatibleAIFinder: CompatibleAIFinder)
     //@Test
     // This test needs to be run manually, as it uses the Vertex AI API
     fun compatibleAiFinderTest() {
-        val partsTitle = "Hodestøtte mrs Netti V/III/HD Stabilisator sb45 cm"
+        val partsTitle = "Seil LowBackSling lav benst delte poly xxliten personløfter frittstående Vega505EE/WendyDrive2"
         val mainProducts: List<HmsNrTitlePair> = listOf(
-            HmsNrTitlePair("316145", "Netti III HD"),
-            HmsNrTitlePair("316151", "Netti III"),
-            HmsNrTitlePair("316157", "Netti V"),
+            HmsNrTitlePair("329672", "Vega505EE"),
+            HmsNrTitlePair("329673", "WendyDrive2"),
         )
         println(compatibleAIFinder.generatePrompt(partsTitle, mainProducts))
         val hmsnrs = compatibleAIFinder.findCompatibleProducts(partsTitle, mainProducts)

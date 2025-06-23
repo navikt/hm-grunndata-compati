@@ -58,6 +58,7 @@ class CompatibleAIFinder(private val config: VertexAIConfig, private val objectM
                 .withSystemInstruction(ContentMaker.fromString(instruction))
             val response = model.generateContent(prompt)
             val output: String = ResponseHandler.getText(response)
+            LOG.debug("${config.project} ${config.location} - Generating content for model ${config.model} with temp: ${config.temperature} with prompt: $prompt")
             LOG.debug("Got response: $output")
             return objectMapper.readValue(output,object : TypeReference<List<HmsNr>>() {} )
         }
