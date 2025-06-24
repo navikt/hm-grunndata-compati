@@ -4,8 +4,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 val jvmTarget = "17"
-val micronautVersion="4.8.2"
-val junitJupiterVersion = "5.9.0"
+val micronautVersion="4.8.3"
+val junitJupiterVersion = "5.9.2"
+val jakartaPersistenceVersion = "3.1.0"
 val logbackClassicVersion = "1.4.12"
 val logbackEncoderVersion = "7.3"
 val tcVersion= "1.20.4"
@@ -16,6 +17,7 @@ val httpClient5Version = "5.4.1"
 val opensearchTestContainerVersion = "2.1.1"
 val rapidsRiversVersion = "202410290928"
 val grunndataDtoVersion = "202502101053"
+val googleCloudPlatformVersion = "26.61.0"
 
 group = "no.nav.hm"
 version = properties["version"] ?: "local-build"
@@ -47,7 +49,7 @@ dependencies {
 
     // micronaut-data
     implementation("io.micronaut.data:micronaut-data-jdbc")
-    implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
+    implementation("jakarta.persistence:jakarta.persistence-api:$jakartaPersistenceVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     implementation("io.micronaut:micronaut-runtime")
@@ -70,11 +72,11 @@ dependencies {
     testImplementation("io.micronaut.test:micronaut-test-kotest5")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.testcontainers:testcontainers:$tcVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestContainerVersion")
 
-    implementation(platform("com.google.cloud:libraries-bom:26.61.0"))
+    implementation(platform("com.google.cloud:libraries-bom:$googleCloudPlatformVersion"))
     implementation("com.google.cloud:google-cloud-vertexai")
 }
 
