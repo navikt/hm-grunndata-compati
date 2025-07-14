@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Test
 
-@MicronautTest
+@MicronautTest(startApplication = false)
 class QueryBuilderTest(private val queryBuilder: QueryBuilder,
                        private val objectMapper: ObjectMapper) {
 

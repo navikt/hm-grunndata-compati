@@ -4,7 +4,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import no.nav.hm.grunndata.compati.product.compatible.CompatibleAIFinder
 import org.junit.jupiter.api.Test
 
-@MicronautTest
+@MicronautTest(startApplication=false)
 class CompatibleFinderAITest(private val compatibleAIFinder: CompatibleAIFinder) {
 
     @Test
