@@ -4,19 +4,18 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 
 val jvmTarget = "17"
-val micronautVersion="4.8.3"
+val micronautVersion="4.9.1"
 val junitJupiterVersion = "5.9.2"
 val jakartaPersistenceVersion = "3.1.0"
-val logbackClassicVersion = "1.4.12"
 val logbackEncoderVersion = "7.3"
 val tcVersion= "1.20.4"
 val mockkVersion = "1.13.4"
 val kotestVersion = "5.5.5"
-val openSearchJavaClientVersion = "2.18.0"
-val httpClient5Version = "5.4.1"
+val openSearchJavaClientVersion = "2.24.0"
+val httpClient5Version = "5.4.4"
 val opensearchTestContainerVersion = "2.1.1"
 val rapidsRiversVersion = "202410290928"
-val grunndataDtoVersion = "202502101053"
+val grunndataDtoVersion = "202504011524"
 val googleCloudPlatformVersion = "26.61.0"
 
 group = "no.nav.hm"
@@ -25,9 +24,9 @@ version = properties["version"] ?: "local-build"
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("kapt") version "1.9.25"
-    id("java")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.5.3"
+    id("com.gradleup.shadow") version "8.3.6"
+    id("io.micronaut.aot") version "4.5.4"
+    id("io.micronaut.application") version "4.5.4"
 }
 
 configurations.all {
@@ -37,7 +36,7 @@ configurations.all {
 }
 
 dependencies {
-    api("ch.qos.logback:logback-classic:$logbackClassicVersion")
+    api("ch.qos.logback:logback-classic")
     api("net.logstash.logback:logstash-logback-encoder:$logbackEncoderVersion")
 
     runtimeOnly("org.yaml:snakeyaml")
@@ -54,7 +53,6 @@ dependencies {
 
     implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("io.micronaut:micronaut-http-server-netty")
     implementation("io.micronaut:micronaut-http-client")
     implementation("org.opensearch.client:opensearch-java:$openSearchJavaClientVersion")
     implementation("org.apache.httpcomponents.client5:httpclient5:$httpClient5Version")
@@ -68,12 +66,12 @@ dependencies {
     implementation("com.github.navikt:hm-rapids-and-rivers-v2-micronaut-deadletter:$rapidsRiversVersion")
     implementation("no.nav.hm.grunndata:hm-grunndata-rapid-dto:$grunndataDtoVersion")
 
-    testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("io.micronaut.test:micronaut-test-kotest5")
-    testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
+    testImplementation("io.micronaut:micronaut-http-client")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
+    testImplementation("org.testcontainers:testcontainers")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
-    testImplementation("org.testcontainers:testcontainers:$tcVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("org.opensearch:opensearch-testcontainers:$opensearchTestContainerVersion")
 
     implementation(platform("com.google.cloud:libraries-bom:$googleCloudPlatformVersion"))
