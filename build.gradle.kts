@@ -24,8 +24,8 @@ version = properties["version"] ?: "local-build"
 plugins {
     kotlin("jvm") version "1.9.25"
     kotlin("kapt") version "1.9.25"
+    id("java")
     id("com.gradleup.shadow") version "8.3.6"
-    id("io.micronaut.aot") version "4.5.4"
     id("io.micronaut.application") version "4.5.4"
 }
 
